@@ -1,0 +1,43 @@
+defaults:
+  - model: deepspeech2
+  - lr_scheduler: cosine_warmup
+  - optimizer: adamw
+  - writer: cometml
+  - metrics: example
+  - datasets: deepspeech2
+  - dataloader: example
+  - transforms: deepspeech2_no_augmentation
+  - _self_
+model:
+  n_feats: 161
+metrics:
+  train:
+    - _target_: src.metrics.ArgmaxCERMetric
+      name: "CER_(Argmax)"
+    - _target_: src.metrics.ArgmaxWERMetric
+      name: "WER_(Argmax)"
+loss_function:
+  _target_: src.loss.CTCLossWrapper
+text_encoder:
+  _target_: src.text_encoder.CTCTextEncoder
+dataloader:
+  batch_size: 512
+trainer:
+  log_step: 50
+  n_epochs: 20
+  epoch_len: null
+  device_tensors: [spectrogram, text_encoded]
+  resume_from: null
+  device: auto
+  override: false
+  monitor: "min dev_clean_WER_(Argmax)"
+  save_period: 1
+  early_stop: ${trainer.n_epochs}
+  save_dir: saved
+  seed: 1
+  max_grad_norm: 400
+  sortagrad: true
+  lr_scheduler_step: batch
+writer:
+  mode: offline
+  run_name: deepspeech2_paper

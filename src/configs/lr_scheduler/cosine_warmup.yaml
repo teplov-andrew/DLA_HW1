@@ -1,0 +1,4 @@
+_target_: src.utils.lr_scheduler.get_warmup_cosine_scheduler
+warmup_steps: 1000
+start_factor: 0.01
+min_lr: 1e-6

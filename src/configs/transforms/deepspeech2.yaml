@@ -1,0 +1,39 @@
+instance_transforms:
+  train:
+    audio:
+      _target_: torch.nn.Sequential
+      _args_:
+        - _target_: src.transforms.power_spectrogram.NormalizePower
+        - _target_: src.transforms.wav_augs.AddNoise
+          min_snr_db: 15.0
+          max_snr_db: 30.0
+          p: 0.5
+        - _target_: src.transforms.wav_augs.SpeedPerturbation
+          sample_rate: 16000
+          speeds: [0.9, 1.0, 1.1]
+          p: 0.5
+        - _target_: src.transforms.wav_augs.Volume
+          min_volume_in_db: -6.0
+          max_volume_in_db: 6.0
+          p: 0.5
+    spectrogram:
+      _target_: src.transforms.spec_augs.TimeMasking
+      max_width: 10
+      num_masks: 1
+      max_fraction: 0.1
+      p: 0.5
+    get_spectrogram:
+      _target_: src.transforms.power_spectrogram.PowerSpectrogram
+      sample_rate: 16000
+      window_length: 0.02
+      hop_length: 0.01
+      normalize_power: false
+  inference:
+    spectrogram:
+      _target_: torch.nn.Identity
+    audio:
+      _target_: src.transforms.power_spectrogram.NormalizePower
+    get_spectrogram: ${transforms.instance_transforms.train.get_spectrogram}
+batch_transforms:
+  train: null
+  inference: null

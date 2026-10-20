@@ -1,0 +1,7 @@
+defaults:
+  - onebatchtest
+  - _self_
+train:
+  normalize_spectrogram: false
+dev_clean:
+  normalize_spectrogram: false

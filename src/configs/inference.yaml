@@ -1,0 +1,28 @@
+defaults:
+  - model: deepspeech2
+  - datasets: custom_dir
+  - dataloader: example
+  - transforms: deepspeech2_no_augmentation
+  - _self_
+data_dir: data/custom
+model:
+  n_feats: 161
+  conv_layers: 2
+  conv_channels: 32
+  rnn_hidden: 512
+  rnn_layers: 5
+  fc_hidden: 512
+text_encoder:
+  _target_: src.text_encoder.CTCTextEncoder
+dataloader:
+  batch_size: 8
+  num_workers: 0
+  pin_memory: false
+inferencer:
+  device_tensors: [spectrogram]
+  device: auto
+  save_path: predictions
+  seed: 1
+  decoder: greedy
+  beam_size: 10
+  from_pretrained: saved/ds2_gru512x5_trainother500_aug_50ep_scratch_1/model_best.pth

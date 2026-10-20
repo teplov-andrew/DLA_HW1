@@ -1,0 +1,20 @@
+dev_clean:
+  _target_: src.datasets.LibrispeechDataset
+  part: dev-clean
+  normalize_spectrogram: false
+  instance_transforms: ${transforms.instance_transforms.inference}
+dev_other:
+  _target_: src.datasets.LibrispeechDataset
+  part: dev-other
+  normalize_spectrogram: false
+  instance_transforms: ${transforms.instance_transforms.inference}
+test_clean:
+  _target_: src.datasets.LibrispeechDataset
+  part: test-clean
+  normalize_spectrogram: false
+  instance_transforms: ${transforms.instance_transforms.inference}
+test_other:
+  _target_: src.datasets.LibrispeechDataset
+  part: test-other
+  normalize_spectrogram: false
+  instance_transforms: ${transforms.instance_transforms.inference}

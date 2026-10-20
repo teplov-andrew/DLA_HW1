@@ -1,0 +1,7 @@
+defaults:
+  - deepspeech2
+  - _self_
+instance_transforms:
+  train:
+    audio: ${transforms.instance_transforms.inference.audio}
+    spectrogram: ${transforms.instance_transforms.inference.spectrogram}
